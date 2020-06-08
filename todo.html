@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="app">
-        <textarea @keyup.enter="appendTodo" v-model="text"></textarea>
+        <textarea @keydown.enter="appendTodo" v-model="text"></textarea>
         </br>
         <div v-for="todo in todos">
 
@@ -65,10 +65,12 @@
                 show3: false
             },
             methods: {
-                appendTodo: function() {
-                    this.todos.push({ id: this.id, text: this.text, isOK: false})
-                    this.id++
-                    this.text = ""
+                appendTodo: function(event) {
+                    if (event.keyCode == 13) {
+                        this.todos.push({ id: this.id, text: this.text, isOK: false})
+                        this.id++
+                        this.text = ""
+                    }
                 },
                 deleteTodo: function(id) {
                     index = 0
