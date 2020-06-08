@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>todo</title>
+</head>
+<body>
+    <div id="app">
+        <textarea @keyup.enter="appendTodo" v-model="text"></textarea>
+        </br>
+        <div v-for="todo in todos">
+
+            <label v-show="show1">
+                    <div>
+                        <input type="checkbox" v-model="todo.isOK">
+                        <span v-bind:class="{done: todo.isOK}">
+                            <span>{{ todo.text }}</span>
+                            <!-- 消しますか？確認メッセージ出したい -->
+                            <button @click="deleteTodo(todo.id)">消去</button>
+                        </span>
+                    </div>
+            </label>
+            <!-- 未完了だけ出す -->
+            <label v-show="show2">
+                    <div v-if="todo.isOK == false">
+                        <input type="checkbox" v-model="todo.isOK">
+                        <span v-bind:class="{done: todo.isOK}">
+                            <span>{{ todo.text }}</span>
+                            <!-- 消しますか？確認メッセージ出したい -->
+                            <button @click="deleteTodo(todo.id)">消去</button>
+                        </span>
+                    </div>
+            </label>
+            <!-- 完了済みを出す -->
+            <label v-show="show3">
+                    <div v-if="todo.isOK == true">
+                        <input type="checkbox" v-model="todo.isOK">
+                        <span v-bind:class="{done: todo.isOK}">
+                            <span>{{ todo.text }}</span>
+                            <!-- 消しますか？確認メッセージ出したい -->
+                            <button @click="deleteTodo(todo.id)">消去</button>
+                        </span>
+                    </div>
+            </label>
+        </div>
+        <p>未完了：{{ todos.length - countDone }}/ {{ todos.length }}</p>
+        <button v-if="countDone > 0" @click="deleteCompleted">完了したタスクを削除</button>
+        </br>
+        <button @click="show2 = true, show1 = false, show3 = false">未完了</button>
+        <button @click="show3 = true, show2 = false, show1 = false">完了済み</button>
+        <button @click="show1 = true, show2 = false, show3 = false">全部</button>
+    </div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                todos: [],
+                count: 0,
+                id: 0,
+                text: "",
+                show1: true,
+                show2: false,
+                show3: false
+            },
+            methods: {
+                appendTodo: function() {
+                    this.todos.push({ id: this.id, text: this.text, isOK: false})
+                    this.id++
+                    this.text = ""
+                },
+                deleteTodo: function(id) {
+                    index = 0
+                    for (let i = 0; i < this.todos.length; i++) {
+                        if (this.todos[i].id == id) {
+                            index = i
+                        }
+                    }
+                    this.todos.splice(index, 1)
+                },
+                deleteCompleted: function() {
+                    new_todos = []
+                    for (let i = 0; i < this.todos.length; i++) {
+                        if (this.todos[i].isOK == false) {
+                            new_todos.push(this.todos[i])
+                        }
+                    }
+                    this.todos = new_todos
+                },
+                incomplete: function (){
+                    new_todos = []
+                    for (let i = 0; i < this.todos.length; i++) {
+                        if (this.todos[i].isOK == false) {
+                            new_todos.push(this.todos[i])
+                        }
+                    }
+                    return new_todos
+                },
+                completed: function () {
+                    new_todos = []
+                    for (let i = 0; i < this.todos.length; i++) {
+                        if (this.todos[i].isOK == true) {
+                            new_todos.push(this.todos[i])
+                        }
+                    }
+                    return new_todos
+                }
+            },
+            computed: {
+                countDone: function() {
+                    this.count = 0
+                    for (let i = 0; i < this.todos.length; i++) {
+                        if (this.todos[i].isOK == true) {
+                            this.count++
+                        }
+                    }
+                    return this.count
+                },
+                // items: function () {
+                //     if (this.todos.length - this.countDone < 2) {
+                //         return "item"
+                //     } else {
+                //         return "items"
+                //     }
+                // }
+            }
+        })
+    </script>
+    <style>
+        textarea {
+            width: 50%;
+        }
+        .done {
+            text-decoration-line: line-through;
+        }
+    </style>
+</body>
+</html>
