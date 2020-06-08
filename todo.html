@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="app">
-        <textarea @keydown.enter="appendTodo" v-model="text"></textarea>
+        <input width="500px" @keydown.enter="appendTodo" v-model="text">
         </br>
         <div v-for="todo in todos">
 
@@ -68,6 +68,7 @@
                         this.id++
                         this.text = ""
                     }
+                    this.text = ""
                 },
                 deleteTodo: function(id) {
                     result = confirm("本当に消しますか？")
