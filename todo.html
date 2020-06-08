@@ -17,7 +17,6 @@
                         <input type="checkbox" v-model="todo.isOK">
                         <span v-bind:class="{done: todo.isOK}">
                             <span>{{ todo.text }}</span>
-                            <!-- 消しますか？確認メッセージ出したい -->
                             <button @click="deleteTodo(todo.id)">消去</button>
                         </span>
                     </div>
@@ -28,7 +27,6 @@
                         <input type="checkbox" v-model="todo.isOK">
                         <span v-bind:class="{done: todo.isOK}">
                             <span>{{ todo.text }}</span>
-                            <!-- 消しますか？確認メッセージ出したい -->
                             <button @click="deleteTodo(todo.id)">消去</button>
                         </span>
                     </div>
@@ -39,7 +37,6 @@
                         <input type="checkbox" v-model="todo.isOK">
                         <span v-bind:class="{done: todo.isOK}">
                             <span>{{ todo.text }}</span>
-                            <!-- 消しますか？確認メッセージ出したい -->
                             <button @click="deleteTodo(todo.id)">消去</button>
                         </span>
                     </div>
@@ -73,22 +70,28 @@
                     }
                 },
                 deleteTodo: function(id) {
-                    index = 0
-                    for (let i = 0; i < this.todos.length; i++) {
-                        if (this.todos[i].id == id) {
-                            index = i
+                    result = confirm("本当に消しますか？")
+                    if (result == true) {
+                        index = 0
+                        for (let i = 0; i < this.todos.length; i++) {
+                            if (this.todos[i].id == id) {
+                                index = i
+                            }
                         }
+                        this.todos.splice(index, 1)
                     }
-                    this.todos.splice(index, 1)
                 },
                 deleteCompleted: function() {
-                    new_todos = []
-                    for (let i = 0; i < this.todos.length; i++) {
-                        if (this.todos[i].isOK == false) {
-                            new_todos.push(this.todos[i])
+                    result = confirm("本当に消しますか？")
+                    if (result == true) {
+                        new_todos = []
+                        for (let i = 0; i < this.todos.length; i++) {
+                            if (this.todos[i].isOK == false) {
+                                new_todos.push(this.todos[i])
+                            }
                         }
+                        this.todos = new_todos
                     }
-                    this.todos = new_todos
                 },
                 incomplete: function (){
                     new_todos = []
